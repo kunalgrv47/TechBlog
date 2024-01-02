@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import com.techblog.dao.UserDao;
+import com.techblog.entities.Message;
 import com.techblog.entities.User;
 import com.techblog.helper.ConnectionProvider;
 
@@ -37,7 +38,12 @@ public class LoginServlet extends HttpServlet {
 
 				// No user Found or Invalid details
 				out.println("Invalid details..try again");
-
+				Message msg = new Message("Invalid details ! Try with another", "error", "alert-danger");  //alert-danger is a class from bootstrap for generating alert 
+				HttpSession s = req.getSession();
+				s.setAttribute("msg", msg);
+				
+				resp.sendRedirect("login_page.jsp");
+				
 			} else {
 
 				// User found
@@ -46,7 +52,6 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("currentUser", user);
 				resp.sendRedirect("profile.jsp");
 				
-
 			}
 
 		} catch (Exception e) {

@@ -36,7 +36,7 @@
 				<li class="nav-item"><a class="nav-link" href="#"><span class="fa fa-phone"></span> Contacts</a></li>
 				<li class="nav-item"><a class="nav-link" href="login_page.jsp"><span class="fa fa-user-circle"></span> Login</a></li>
 				<li class="nav-item"><a class="nav-link" href="register_page.jsp"><span class="fa fa-user-plus"></span> Sign up</a></li>
-				</li>
+				
 			</ul>
 			<form class="form-inline my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="search"

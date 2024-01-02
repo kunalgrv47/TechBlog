@@ -1,3 +1,4 @@
+<%@page import="com.techblog.entities.Message"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -33,10 +34,29 @@
 			<div class="row">
 				<div class="col-md-4 offset-md-4">
 					<div class="card">
+
+						<!-- card header -->
 						<div class="card-header primary-background text-white text-center">
 							<span class="fa fa-user-plus fa-2x"></span> <br>
 							<p>Login here</p>
 						</div>
+
+						<!-- Showing alert message if any -->
+						<%
+						Message m = (Message) session.getAttribute("msg");
+						if (m != null) {
+						%>
+						<div class="alert <%= m.getCssClass() %>" role="alert"><%= m.getContent() %></div>
+
+						<%
+						session.removeAttribute("msg");
+						}
+						%>
+
+
+
+
+						<!-- card body -->
 						<div class="card-body">
 
 							<form action="LoginServlet" method="post">

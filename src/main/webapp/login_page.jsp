@@ -33,7 +33,11 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-4 offset-md-4">
+
+
+					<!-- Start of Card for login module -->
 					<div class="card">
+
 
 						<!-- card header -->
 						<div class="card-header primary-background text-white text-center">
@@ -41,12 +45,13 @@
 							<p>Login here</p>
 						</div>
 
+
 						<!-- Showing alert message if any -->
 						<%
 						Message m = (Message) session.getAttribute("msg");
 						if (m != null) {
 						%>
-						<div class="alert <%= m.getCssClass() %>" role="alert"><%= m.getContent() %></div>
+						<div class="alert <%=m.getCssClass()%>" role="alert"><%=m.getContent()%></div>
 
 						<%
 						session.removeAttribute("msg");
@@ -54,11 +59,10 @@
 						%>
 
 
-
-
 						<!-- card body -->
 						<div class="card-body">
 
+							<!-- Starting of Form -->
 							<form action="LoginServlet" method="post">
 
 								<div class="form-group">
@@ -79,23 +83,25 @@
 									<button type="submit" class="btn btn-primary">Login</button>
 								</div>
 
-
-
 							</form>
+							<!-- Ending of Form -->
+
 						</div>
-						<div class="card-footer"></div>
 
 
 					</div>
+					<!-- End of card -->
+
 				</div>
 			</div>
 		</div>
+
 	</main>
 
 
 
 
-
+	<!-- Javascript -->
 
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
 		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="

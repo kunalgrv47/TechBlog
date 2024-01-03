@@ -30,6 +30,7 @@ if (user == null) {
 </style>
 
 </head>
+
 <body>
 
 	<!-- Start of NavBar -->
@@ -65,22 +66,155 @@ if (user == null) {
 				<li class="nav-item"><a class="nav-link" href="#"><span
 						class="fa fa-phone"></span> Contacts</a></li>
 
-
 			</ul>
 
 
 			<ul class="navbar-nav mr-right">
-				<li class="nav-item"><a class="nav-link"
-					href="register_page.jsp"><span class="fa fa-user-circle"></span>
-						<%= user.getName() %></a></li>
-				<li class="nav-item"><a class="nav-link"
-					href="LogoutServlet"><span class="fa fa-user-plus"></span>
-						Logout</a></li>
+
+				<li class="nav-item"><a class="nav-link" href="#!"
+					data-toggle="modal" data-target="#profile-modal"><span
+						class="fa fa-user-circle"></span> <%=user.getName()%></a></li>
+
+				<li class="nav-item"><a class="nav-link" href="LogoutServlet"><span
+						class="fa fa-user-plus"></span> Logout</a></li>
 			</ul>
 		</div>
 	</nav>
 
 	<!-- End of NavBar -->
+
+
+
+
+
+	<!-- profile modal -->
+
+	<!-- Modal -->
+	<div class="modal fade" id="profile-modal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header primary-background text-white">
+					<h5 class="modal-title" id="exampleModalLabel">TechBlog</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="container text-center">
+						<img src="pics/<%=user.getProfile()%>" class="img-fluid"
+							style="border-radius: 50%">
+						<h5 class="modal-title" id="exampleModalLabel"><%=user.getName()%></h5>
+
+						<!-- User details -->
+						
+						<div id="profile-details">
+							<table class="table">
+
+								<tbody>
+									<tr>
+										<th scope="row">ID :</th>
+										<td><%=user.getId()%></td>
+
+									</tr>
+									<tr>
+										<th scope="row">Name :</th>
+										<td><%=user.getName()%></td>
+
+									</tr>
+									<tr>
+										<th scope="row">Gender :</th>
+										<td><%=user.getGender()%></td>
+
+									</tr>
+									<tr>
+										<th scope="row">About :</th>
+										<td><%=user.getAbout()%></td>
+
+									</tr>
+									<tr>
+										<th scope="row">Registered on :</th>
+										<td><%=user.getDateTime()%></td>
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						
+
+						<!-- Edit user details. This Div remains hidden until click on Edit -->
+						
+						<div id="profile-edit" style="display: none">
+							<h3 style="">Please Edit Carefully</h3>
+							<form action="EditServlet" method="post" enctype="multipart/form-data">
+								<table class="table">
+									<tr>
+										<td>ID :</td>
+										<td><%=user.getId()%></td>
+									</tr>
+									<tr>
+										<td>Name :</td>
+										<td><input class="form-control" type="text"
+											name="user_name" value="<%=user.getName()%>"></td>
+									</tr>
+									<tr>
+										<td>Email :</td>
+										<td><input class="form-control" type="email"
+											name="user_email" value="<%=user.getEmail()%>"></td>
+									</tr>
+									<tr>
+										<td>Password :</td>
+										<td><input class="form-control" type="password"
+											name="user_email" value="<%=user.getPassword()%>"></td>
+									</tr>
+									<tr>
+										<td>Gender :</td>
+										<td><%=user.getGender().toUpperCase()%></td>
+
+									</tr>
+									<tr>
+										<td>About :</td>
+										<td><textarea class="form-control" name="user_about"
+												rows="3"><%=user.getAbout()%>
+										</textarea></td>
+									</tr>
+									<tr>
+										<td>Change photo :</td>
+										<td><input type="file" name="user_image" class="form-control"></td>
+									</tr>
+
+								</table>
+
+								<div class="container">
+									<button type="submit" class="btn primary-background text-white">Save</button>
+								</div>
+
+							</form>
+						</div>
+
+
+
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+					<button id="edit-profile-button" type="button"
+						class="btn btn-primary">Edit</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- End of profile modal -->
+
+
+
+
+
+
 
 
 
@@ -93,12 +227,36 @@ if (user == null) {
 		src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
 		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
 		crossorigin="anonymous"></script>
+
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
 
 	<script src="js/myjs.js" type="text/javascript"></script>
+
+	<script>
+		$(document).ready(function() {
+
+			let editStatus = false;
+
+			$('#edit-profile-button').click(function() {
+
+				if (editStatus == false) {
+					$('#profile-details').hide()
+					$('#profile-edit').show()
+					$(this).text("Back")
+					editStatus = true;
+				} else {
+					$('#profile-details').show()
+					$('#profile-edit').hide()
+					$(this).text("Edit")
+					editStatus = false;
+				}
+			})
+
+		});
+	</script>
 
 </body>
 </html>

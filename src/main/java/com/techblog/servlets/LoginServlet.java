@@ -37,7 +37,6 @@ public class LoginServlet extends HttpServlet {
 			if (user == null) {
 
 				// No user Found or Invalid details
-				out.println("Invalid details..try again");
 				Message msg = new Message("Invalid details ! Try with another", "error", "alert-danger");  //alert-danger is a class from bootstrap for generating alert 
 				HttpSession s = req.getSession();
 				s.setAttribute("msg", msg);
@@ -48,6 +47,7 @@ public class LoginServlet extends HttpServlet {
 
 				// User found
 				// Creating Session for user
+				
 				HttpSession session = req.getSession();
 				session.setAttribute("currentUser", user);
 				resp.sendRedirect("profile.jsp");

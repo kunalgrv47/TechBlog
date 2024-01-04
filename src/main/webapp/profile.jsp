@@ -1,13 +1,18 @@
-<%@page import="com.techblog.entities.User"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 
+<%@page import="com.techblog.entities.User"%>
+<%@page errorPage="error_page.jsp"%>
 <%
 User user = (User) session.getAttribute("currentUser");
 if (user == null) {
 	response.sendRedirect("login_page.jsp");
 }
 %>
+
+
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -103,12 +108,12 @@ if (user == null) {
 				</div>
 				<div class="modal-body">
 					<div class="container text-center">
-						<img src="pics/<%=user.getProfile()%>" class="img-fluid"
-							style="border-radius: 50%">
-						<h5 class="modal-title" id="exampleModalLabel"><%=user.getName()%></h5>
+						<img alt="<%=user.getProfile()%>"
+							src="pics/<%=user.getProfile()%>" class="img-fluid" style="border-radius: 50%; max-width: 200px">
+						<h5 class="modal-title mt-3" id="exampleModalLabel"><%=user.getName()%></h5>
 
 						<!-- User details -->
-						
+
 						<div id="profile-details">
 							<table class="table">
 
@@ -141,13 +146,14 @@ if (user == null) {
 								</tbody>
 							</table>
 						</div>
-						
+
 
 						<!-- Edit user details. This Div remains hidden until click on Edit -->
-						
+
 						<div id="profile-edit" style="display: none">
 							<h3 style="">Please Edit Carefully</h3>
-							<form action="EditServlet" method="post" enctype="multipart/form-data">
+							<form action="EditServlet" method="post"
+								enctype="multipart/form-data">
 								<table class="table">
 									<tr>
 										<td>ID :</td>
@@ -166,7 +172,7 @@ if (user == null) {
 									<tr>
 										<td>Password :</td>
 										<td><input class="form-control" type="password"
-											name="user_email" value="<%=user.getPassword()%>"></td>
+											name="user_password" value="<%=user.getPassword()%>"></td>
 									</tr>
 									<tr>
 										<td>Gender :</td>
@@ -181,7 +187,8 @@ if (user == null) {
 									</tr>
 									<tr>
 										<td>Change photo :</td>
-										<td><input type="file" name="user_image" class="form-control"></td>
+										<td><input type="file" name="user_image" value="<%= user.getProfile() %>"
+											class="form-control"></td>
 									</tr>
 
 								</table>

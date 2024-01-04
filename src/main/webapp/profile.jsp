@@ -1,4 +1,5 @@
 
+<%@page import="com.techblog.entities.Message"%>
 <%@page import="com.techblog.entities.User"%>
 <%@page errorPage="error_page.jsp"%>
 <%
@@ -91,6 +92,21 @@ if (user == null) {
 
 
 
+	<!-- Showing alert message to profile if any changes made -->
+	<%
+	Message m = (Message) session.getAttribute("msg");
+	if (m != null) {
+	%>
+	<div class="alert <%=m.getCssClass()%>" role="alert"><%=m.getContent()%></div>
+
+	<%
+	session.removeAttribute("msg");
+	}
+	%>
+
+
+
+
 
 	<!-- profile modal -->
 
@@ -109,7 +125,8 @@ if (user == null) {
 				<div class="modal-body">
 					<div class="container text-center">
 						<img alt="<%=user.getProfile()%>"
-							src="pics/<%=user.getProfile()%>" class="img-fluid" style="border-radius: 50%; max-width: 200px">
+							src="pics/<%=user.getProfile()%>" class="img-fluid"
+							style="border-radius: 50%; max-width: 200px">
 						<h5 class="modal-title mt-3" id="exampleModalLabel"><%=user.getName()%></h5>
 
 						<!-- User details -->
@@ -187,8 +204,8 @@ if (user == null) {
 									</tr>
 									<tr>
 										<td>Change photo :</td>
-										<td><input type="file" name="user_image" value="<%= user.getProfile() %>"
-											class="form-control"></td>
+										<td><input type="file" name="user_image"
+											value="<%=user.getProfile()%>" class="form-control"></td>
 									</tr>
 
 								</table>

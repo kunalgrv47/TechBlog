@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import com.techblog.dao.UserDao;
+import com.techblog.entities.Message;
 import com.techblog.entities.User;
 import com.techblog.helper.ConnectionProvider;
 import com.techblog.helper.Helper;
@@ -26,6 +27,7 @@ public class EditServlet extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		try (PrintWriter out = resp.getWriter()) {
+			
 
 			// Fetch all data from form
 			String name = req.getParameter("user_name");
@@ -34,10 +36,16 @@ public class EditServlet extends HttpServlet {
 			String about = req.getParameter("user_about");
 			Part part = req.getPart("user_image");
 			String imageName = part.getSubmittedFileName();
+			
+			
+			
 
 			// Get the user from session
 			HttpSession s = req.getSession();
 			User user = (User) s.getAttribute("currentUser");
+			
+			
+			
 
 			// Setting user details with new data
 			user.setName(name);
@@ -45,9 +53,13 @@ public class EditServlet extends HttpServlet {
 			user.setPassword(password);
 			user.setAbout(about);
 			String oldProfile = user.getProfile();
+			// Set profile only when user uploads new image
 			if (imageName != null && !imageName.isEmpty()) {
 				user.setProfile(imageName);
 			}
+			
+			
+			
 
 			// Check if a new file is selected
 			if (imageName != null && !imageName.isEmpty()) {
@@ -60,7 +72,9 @@ public class EditServlet extends HttpServlet {
 
 					UserDao dao = new UserDao(ConnectionProvider.getConnection());
 					if (dao.updateUser(user)) {
-						out.println("Profile details and profile photo updated successfully");
+//						out.println("Profile details and profile photo updated successfully");
+						Message msg = new Message("Profile details and profile photo updated successfully", "success", "alert-success");  //alert-success is a class from bootstrap for generating alert 
+						s.setAttribute("msg", msg);
 
 						// Delete old profile picture if it's not the default one
 						if (!oldProfile.equals("default.png")) {
@@ -70,21 +84,38 @@ public class EditServlet extends HttpServlet {
 						}
 
 					} else {
-						out.println("Something went wrong while updating profile details");
+//						out.println("Something went wrong while updating profile details");
+						Message msg = new Message("Something went wrong while updating profile details", "error", "alert-danger");  //alert-danger is a class from bootstrap for generating alert 
+						s.setAttribute("msg", msg);
 					}
 
 				} else {
-					out.println("Profile photo not updated successfully");
+//					out.println("Something went wrong while uploading profile photo");
+					Message msg = new Message("Something went wrong while uploading profile photo", "error", "alert-danger");  //alert-danger is a class from bootstrap for generating alert 
+					s.setAttribute("msg", msg);
 				}
 			} else {
+				
 				// Update details to the database (no need to upload an image)
 				UserDao dao = new UserDao(ConnectionProvider.getConnection());
+				
 				if (dao.updateUser(user)) {
-					out.println("Profile updated successfully, and no changes in the profile picture");
+					
+//					out.println("Profile updated successfully, and no changes in the profile picture");
+					Message msg = new Message("Profile updated successfully, and no changes in the profile picture", "success", "alert-success");  //alert-success is a class from bootstrap for generating alert 
+					s.setAttribute("msg", msg);
+					
+					
 				} else {
-					out.println("Something went wrong while updating profile details");
+					
+//					out.println("Something went wrong while updating profile details");
+					Message msg = new Message("Something went wrong while updating profile photo", "error", "alert-danger");  //alert-danger is a class from bootstrap for generating alert 
+					s.setAttribute("msg", msg);
 				}
 			}
+			
+			
+			resp.sendRedirect("profile.jsp");
 			
 
 		} catch (Exception e) {

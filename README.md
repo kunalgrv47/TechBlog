@@ -67,6 +67,7 @@ Ensure the following are installed:
 
 - **Log out of user accounts.**
 
+
 ## Usage
 
 ### Signup/Login:

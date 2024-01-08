@@ -86,7 +86,7 @@ Ensure the following are installed:
 
 - Edit profiles and create new posts.
 
-##3 Logout:
+### Logout:
 
 - Log out of user accounts.
 

@@ -16,7 +16,7 @@ TechBlog is a dynamic web application developed in Java that provides a platform
   - Web resources including HTML, JSP, CSS, Bootstrap, and Ajax files and some folders for images.
 
 - **README:** Project documentation.
-- 
+
 - **pom.xml:** Maven configuration for dependency management.
 
 ## Getting Started

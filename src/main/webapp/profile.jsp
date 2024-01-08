@@ -22,23 +22,23 @@ if (user == null) {
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Profile</title>
-
-<!-- css -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-	crossorigin="anonymous">
-<link rel="stylesheet" href="css/mystyle.css" type="text/css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<style>
-.banner-background {
-	clip-path: polygon(0 0, 100% 0, 100% 95%, 64% 100%, 30% 96%, 0 100%);
-}
-</style>
+	<meta charset="UTF-8">
+	<title>Profile</title>
+	
+	<!-- css -->
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+		crossorigin="anonymous">
+	<link rel="stylesheet" href="css/mystyle.css" type="text/css">
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<style>
+	.banner-background {
+		clip-path: polygon(0 0, 100% 0, 100% 95%, 64% 100%, 30% 96%, 0 100%);
+	}
+	</style>
 
 </head>
 
@@ -112,6 +112,66 @@ if (user == null) {
 	session.removeAttribute("msg");
 	}
 	%>
+
+
+
+	<!-- Main body of the page -->
+
+	<main>
+
+		<div class="container">
+			<div class="row mt-4">
+
+				<!-- First Column. For selecting post categories-->
+				<div class="col-md-4">
+					<!-- Show Categories -->
+					<div class="list-group">
+						<a href="#" class="list-group-item list-group-item-action active">All
+							Posts </a>
+
+						<!-- Getting all categories from DB -->
+
+						<%
+						PostDao d = new PostDao(ConnectionProvider.getConnection());
+						ArrayList<Category> list1 = d.getAllCategories();
+
+						for (Category cc : list1) {
+						%>
+						<a href="#" class="list-group-item list-group-item-action"><%=cc.getName()%></a>
+						<%
+						}
+						%>
+
+					</div>
+				</div>
+
+
+				<!-- Second Column. For showing posts -->
+				<div class="col-md-8">
+				
+					<!-- Show Posts -->
+					<div class="container text-center" id="loader">
+						<i class="fa fa-refresh fa-4x fa-spin"></i>
+						<h3 class="mt-2">Loading...</h3>
+					</div>
+					
+					<div class="container-fluid" id="post-container">
+					
+					</div>
+
+
+				</div>
+
+
+			</div>
+		</div>
+
+	</main>
+
+
+
+
+	<!-- End of Main body of the page -->
 
 
 
@@ -379,48 +439,59 @@ if (user == null) {
 	</script>
 
 
+
+
 	<!-- JS for adding post -->
-
 	<script>
-		$(document).ready(function(e) {
-
-			$("#add-post-form").on("submit", function(event) {
-				// This code gets called when for submitted
-				event.preventDefault();
-				console.log("you have clicked on submit..")
-				let form = new FormData(this);
-
-				// Now requesting to server
-				$.ajax({
-					url : "AddPostServlet",
-					type : 'POST',
-					data : form,
-
-					success : function(data, textStatus, jqXHR) {
-						// successfully request came
-						console.log(data);
-						if(data.trim() == 'done'){
-							swal("Good job!", "Post saved successfully", "success");
-						}else{
-							swal("Error!", "Something went wrong, try again", "error");
-						}
-
-					},
-
-					error : function(jqXHR, textStatus, errorThrown) {
-						// Error..
-						swal("Error!", "Something went wrong, try again", "error");
-
-					},
-
-					processData : false,
-					contentType : false
-				})
+	    $(document).ready(function (e) {
+	        $("#add-post-form").on("submit", function (event) {
+	            // This code gets called when the form is submitted
+	            event.preventDefault();
+	            console.log("You have clicked on submit..");
+	            let form = new FormData(this);
+	
+	            // Now requesting to server
+	            $.ajax({
+	                url: "AddPostServlet",
+	                type: 'POST',
+	                data: form,
+	                success: function (data, textStatus, jqXHR) {
+	                    // Successfully, request came
+	                    console.log(data);
+	                    if (data.trim() == 'done') {
+	                        swal("Good job!", "Post saved successfully", "success");
+	                    } else {
+	                        swal("Error!", "Something went wrong, try again", "error");
+	                    }
+	                },
+	                error: function (jqXHR, textStatus, errorThrown) {
+	                    // Error..
+	                    swal("Error!", "Something went wrong, try again", "error");
+	                },
+	                processData: false,
+	                contentType: false
+	            });
+	        });
+	    });
+	</script>
+	
+	
+	
+	<!-- Loading post using Ajax -->
+	<script>
+		$(document).ready(function(e){
+			
+			$.ajax({
+				url : "load_posts.jsp",
+				success: function (data, textStatus, jqXHR) {
+					console.log(data);
+					$("#loader").hide()
+					$('#post-container').html(data)
+				}
+				
 			})
 		})
 	</script>
-
-
 
 
 
